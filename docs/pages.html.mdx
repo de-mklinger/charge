@@ -1,11 +1,7 @@
-import Layout from "./layout.html.jsx"
-
 export const meta = {
   id: "pages",
   title: "Pages",
 }
-
-export const layout = (props) => <Layout currentPageID={meta.id} {...props} />
 
 # Pages
 
@@ -109,6 +105,17 @@ export default (props) => {
     </html>
   )
 }
+```
+
+A default layout component can be placed in the file `layout.html.jsx` as the default export. This file will be used for all MDX pages in this directory that don't export a `layout`.
+
+To prevent the default layout to be applied (to force no layout, even if the default layout file is present), export `null` as `layout`:
+
+```markdown
+// index.html.mdx
+export const layout = null
+
+# Heading
 ```
 
 ### Plugins

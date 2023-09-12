@@ -9,13 +9,13 @@ import SearchInput from "./components/SearchInput.html.jsx"
 import SearchScript from "./components/SearchScript.html.jsx"
 import Tracking from "./components/tracking.html.jsx"
 
-export default ({ children, currentPageID, environment, pages }) => {
-  let currentPage = pages.find((page) => page.meta.id === currentPageID)
+export default ({ children, currentPage, environment, pages }) => {
   let pageTitle =
-    currentPageID === "about"
+    currentPage.meta.id === "about"
       ? "Charge — an opinionated, zero-config static site generator"
       : `${currentPage.meta.title} — Charge`
-  let openGraphTitle = currentPageID === "about" ? "Charge" : `${currentPage.meta.title} — Charge`
+  let openGraphTitle =
+    currentPage.meta.id === "about" ? "Charge" : `${currentPage.meta.title} — Charge`
   let description = "An opinionated, zero-config static site generator"
 
   let baseURL = "https://charge.js.org"
@@ -58,10 +58,10 @@ export default ({ children, currentPageID, environment, pages }) => {
         />
       </head>
       <body>
-        <Nav currentPageID={currentPageID} pages={pages} />
+        <Nav currentPageID={currentPage.meta.id} pages={pages} />
 
         <Main>
-          {currentPageID === "about" ? (
+          {currentPage.meta.id === "about" ? (
             <div className="container" style={{ textAlign: "center" }}>
               <Logomark size={260} />
             </div>
@@ -78,7 +78,7 @@ export default ({ children, currentPageID, environment, pages }) => {
           <div className="container">{children}</div>
 
           <footer className="container">
-            <Pagination currentPageID={currentPageID} pages={pages} />
+            <Pagination currentPageID={currentPage.meta.id} pages={pages} />
 
             <div style={{ marginTop: "4rem" }}>
               <small>
