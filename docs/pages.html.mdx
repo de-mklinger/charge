@@ -107,7 +107,7 @@ export default (props) => {
 }
 ```
 
-A default layout component can be placed in the file `layout.html.jsx` as the default export. This file will be used for all MDX pages in this directory that don't export a `layout`.
+A default layout component can be placed in the file `default-mdx-layout.jsx` as the default export. This file will be used for all MDX pages in this directory that don't export a `layout`. Parent directories will be traversed to find a default layout file.
 
 To prevent the default layout to be applied (to force no layout, even if the default layout file is present), export `null` as `layout`:
 
