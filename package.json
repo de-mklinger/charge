@@ -1,14 +1,24 @@
 {
-  "name": "@static/charge",
-  "version": "1.7.0",
+  "name": "@de-mklinger/charge",
+  "version": "1.7.1",
   "description": "An opinionated, zero-config static site generator",
   "author": {
     "name": "Brandon Weiss",
     "email": "brandon@anti-pattern.com"
   },
+  "contributors": [
+    {
+      "name": "Marc Klinger",
+      "email": "mklinger@mklinger.de"
+    }
+  ],
+  "files": [
+    "cli.js",
+    "lib"
+  ],
   "bin": "cli.js",
   "engines": {
-    "node": ">= 10.18.0"
+    "node": ">= 18"
   },
   "keywords": [
     "jsx",
@@ -21,7 +31,7 @@
     "website"
   ],
   "license": "MIT",
-  "repository": "https://github.com/brandonweiss/charge",
+  "repository": "https://github.com/de-mklinger/charge",
   "scripts": {
     "docs": "node cli.js serve docs",
     "test": "ava --verbose --serial",
