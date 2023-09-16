@@ -6,11 +6,13 @@ const meow = require("meow")
 const build = require("./lib/build").default
 const serve = require("./lib/serve").default
 
-const cli = meow(`
+const cli = meow(
+  `
   Usage
     ❯ charge serve <source directory>
     ❯ charge build <source directory> <target directory>
-`)
+`,
+)
 
 let command = cli.input[0]
 
@@ -18,10 +20,21 @@ switch (command) {
   case undefined:
     return cli.showHelp()
   case "build":
-    return build({
-      source: cli.input[1],
-      target: cli.input[2],
-    })
+    let buildCLI = meow(
+      `
+      Usage
+        ❯ charge build <source directory> <target directory>
+    `,
+    )
+
+    if (buildCLI.input[1] && buildCLI.input[2]) {
+      return build({
+        source: buildCLI.input[1],
+        target: buildCLI.input[2],
+      })
+    }
+
+    buildCLI.showHelp()
   case "serve":
   case "server":
     let serveCLI = meow(
@@ -44,10 +57,10 @@ switch (command) {
       },
     )
 
-    if (cli.input[1]) {
+    if (serveCLI.input[1]) {
       return serve({
-        source: cli.input[1],
-        port: cli.flags.port,
+        source: serveCLI.input[1],
+        port: serveCLI.flags.port,
       })
     }
 
