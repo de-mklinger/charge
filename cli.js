@@ -14,21 +14,6 @@ const cli = meow(
 `,
 )
 
-const commonFlags = {
-  outputMode: {
-    type: "string",
-    //choices: ["legacy", "fixed-legacy", "plain", "index-files"]
-  },
-  defaultMdxLayout: {
-    type: "string",
-  },
-}
-
-const commonOptions = `
-  --output-mode
-  --default-mdx-layout
-  `.trim()
-
 let command = cli.input[0]
 
 switch (command) {
@@ -41,12 +26,15 @@ Usage
   ❯ charge build <source directory> <target directory>
 
 Options
-  ${commonOptions}
+  --output-mode
   --homepage
   --ignore`,
       {
         flags: {
-          ...commonFlags,
+          outputMode: {
+            type: "string",
+            //choices: ["legacy", "fixed-legacy", "plain", "index-files"]
+          },
           homepage: {
             type: "string",
           },
@@ -75,14 +63,22 @@ Usage
   ❯ charge serve <source directory>
 
 Options
-  ${commonOptions}
+  --output-mode
+  --ignore
   --port
 
 Examples
   ❯ charge serve <source directory> --port 2468`,
       {
         flags: {
-          ...commonFlags,
+          outputMode: {
+            type: "string",
+            //choices: ["legacy", "fixed-legacy", "plain", "index-files"]
+          },
+          ignore: {
+            type: "string",
+            isMultiple: true,
+          },
           port: {
             type: "number",
           },
