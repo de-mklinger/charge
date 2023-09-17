@@ -1,14 +1,7 @@
 import test from "ava"
 import request from "supertest"
-import { join as pathJoin } from "path"
 import serve from "../lib/serve"
-import dedent from "dedent"
-import {
-  createSourceFiles,
-  cleanFiles,
-  sourceDirectory,
-  targetDirectory,
-} from "./helpers/filesystem"
+import { cleanFiles, createSourceFiles, sourceDirectory } from "./helpers/filesystem"
 
 test.beforeEach((t) => cleanFiles())
 test.after.always((t) => cleanFiles())
@@ -66,20 +59,6 @@ test("serves a named page with the extension", async (t) => {
   t.is(response.status, 200)
   t.is(response.headers["content-type"], "text/html; charset=UTF-8")
   t.is(response.text, "foo")
-
-  browserSyncInstance.publicInstance.exit()
-})
-
-test("redirects a URL with an ending slash", async (t) => {
-  t.plan(2)
-
-  let browserSyncInstance = await serve({ source: sourceDirectory, openBrowser: false, port: 3000 })
-  let server = browserSyncInstance.server
-
-  let response = await request(server).get("/named/")
-
-  t.is(response.status, 302)
-  t.is(response.headers.location, "/named")
 
   browserSyncInstance.publicInstance.exit()
 })

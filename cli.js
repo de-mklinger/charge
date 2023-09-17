@@ -6,11 +6,13 @@ const meow = require("meow")
 const build = require("./lib/build").default
 const serve = require("./lib/serve").default
 
-const cli = meow(`
+const cli = meow(
+  `
   Usage
     ❯ charge serve <source directory>
     ❯ charge build <source directory> <target directory>
-`)
+`,
+)
 
 let command = cli.input[0]
 
@@ -18,25 +20,65 @@ switch (command) {
   case undefined:
     return cli.showHelp()
   case "build":
-    return build({
-      source: cli.input[1],
-      target: cli.input[2],
-    })
+    let buildCLI = meow(
+      `
+Usage
+  ❯ charge build <source directory> <target directory>
+
+Options
+  --output-mode
+  --homepage
+  --ignore`,
+      {
+        flags: {
+          outputMode: {
+            type: "string",
+            //choices: ["legacy", "fixed-legacy", "plain", "index-files"]
+          },
+          homepage: {
+            type: "string",
+          },
+          ignore: {
+            type: "string",
+            isMultiple: true,
+          },
+        },
+      },
+    )
+
+    if (buildCLI.input[1] && buildCLI.input[2]) {
+      return build({
+        source: buildCLI.input[1],
+        target: buildCLI.input[2],
+        ...buildCLI.flags,
+      })
+    }
+
+    buildCLI.showHelp()
   case "serve":
   case "server":
     let serveCLI = meow(
       `
-      Usage
-        ❯ charge serve <source directory>
+Usage
+  ❯ charge serve <source directory>
 
-      Options
-        --port
+Options
+  --output-mode
+  --ignore
+  --port
 
-      Examples
-        ❯ charge serve <source directory> --port 2468
-    `,
+Examples
+  ❯ charge serve <source directory> --port 2468`,
       {
         flags: {
+          outputMode: {
+            type: "string",
+            //choices: ["legacy", "fixed-legacy", "plain", "index-files"]
+          },
+          ignore: {
+            type: "string",
+            isMultiple: true,
+          },
           port: {
             type: "number",
           },
@@ -44,10 +86,10 @@ switch (command) {
       },
     )
 
-    if (cli.input[1]) {
+    if (serveCLI.input[1]) {
       return serve({
-        source: cli.input[1],
-        port: cli.flags.port,
+        source: serveCLI.input[1],
+        ...serveCLI.flags,
       })
     }
 
