@@ -14,6 +14,21 @@ const cli = meow(
 `,
 )
 
+const commonFlags = {
+  outputMode: {
+    type: "string",
+    //choices: ["legacy", "fixed-legacy", "plain", "index-files"]
+  },
+  defaultMdxLayout: {
+    type: "string",
+  },
+}
+
+const commonOptions = `
+  --output-mode
+  --default-mdx-layout
+  `.trim()
+
 let command = cli.input[0]
 
 switch (command) {
@@ -22,15 +37,32 @@ switch (command) {
   case "build":
     let buildCLI = meow(
       `
-      Usage
-        ❯ charge build <source directory> <target directory>
-    `,
+Usage
+  ❯ charge build <source directory> <target directory>
+
+Options
+  ${commonOptions}
+  --homepage
+  --ignore`,
+      {
+        flags: {
+          ...commonFlags,
+          homepage: {
+            type: "string",
+          },
+          ignore: {
+            type: "string",
+            isMultiple: true,
+          },
+        },
+      },
     )
 
     if (buildCLI.input[1] && buildCLI.input[2]) {
       return build({
         source: buildCLI.input[1],
         target: buildCLI.input[2],
+        ...buildCLI.flags,
       })
     }
 
@@ -39,17 +71,18 @@ switch (command) {
   case "server":
     let serveCLI = meow(
       `
-      Usage
-        ❯ charge serve <source directory>
+Usage
+  ❯ charge serve <source directory>
 
-      Options
-        --port
+Options
+  ${commonOptions}
+  --port
 
-      Examples
-        ❯ charge serve <source directory> --port 2468
-    `,
+Examples
+  ❯ charge serve <source directory> --port 2468`,
       {
         flags: {
+          ...commonFlags,
           port: {
             type: "number",
           },
@@ -60,7 +93,7 @@ switch (command) {
     if (serveCLI.input[1]) {
       return serve({
         source: serveCLI.input[1],
-        port: serveCLI.flags.port,
+        ...serveCLI.flags,
       })
     }
 
