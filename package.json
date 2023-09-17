@@ -1,6 +1,6 @@
 {
   "name": "@de-mklinger/charge",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "description": "An opinionated, zero-config static site generator",
   "author": {
     "name": "Brandon Weiss",
